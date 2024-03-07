@@ -15,7 +15,7 @@ This React.js project fetches project details from the GitHub repository "[https
 
 2. **Clone the repository:**
    ```bash
-   git clone https://github.com/your-username/BharatBulletin.git
+   git clone https://github.com/Vidhinpatel08/BharatBulletin.git
    ```
 
 3. **Navigate to the project directory:**
@@ -69,7 +69,7 @@ This React.js project fetches project details from the GitHub repository "[https
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/your-username/BharatBulletin.git
+   git clone https://github.com/Vidhinpatel08/BharatBulletin.git
    ```
 2. **Install dependencies:**
    ```bash
