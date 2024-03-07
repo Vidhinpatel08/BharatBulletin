@@ -10,7 +10,8 @@ const NewsItem = (props) => {
                     justifyContent: 'flex-end',
                     right: '-10px',
                     top: '-10px',
-                    position: 'absolute'
+                    position: 'absolute',
+                    fontSize:'18px'
                 }}>
                     <span className="badge rounded-pill bg-danger" style={{ zIndex: '1', left: '90%' }}>{source}</span>
                 </div>

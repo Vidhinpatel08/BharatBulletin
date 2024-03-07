@@ -19,41 +19,73 @@ const News = (props) => {
     }
 
     const updateNews = async () => {
-        props.setProgress(0)
-        const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page}&pagesize=${props.pagesize}`
-        props.setProgress(10)
-        setLoading(true)
-        props.setProgress(20)
-        let data = await fetch(url)
-        props.setProgress(50)
-        let parsedData = await data.json()
-        props.setProgress(70)
-        setArticles(parsedData.articles)
-        setLoading(false)
-        setTotalResults(parsedData.totalResults)
-        props.setProgress(100)
+        props.setProgress(0);
+        const url = `https://api.newscatcherapi.com/v2/latest_headlines?topic=${props.category}&when=7d&page_size=${props.pagesize}&lang=en&countries=${props.countries}`;
+        const requestOptions = {
+            method: 'GET',
+            headers: {
+                'x-api-key': props.apiKey
+            }
+        };
+
+        try {
+            props.setProgress(10);
+            setLoading(true);
+            const response = await fetch(url, requestOptions);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            props.setProgress(50);
+            setArticles(data.articles);
+            setLoading(false);
+            setTotalResults(data.total);
+            props.setProgress(100);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
     }
 
+
     useEffect(() => {
-        document.title = `${capitalized(props.category)} - NewsMonkey`
+        document.title = `${capitalized(props.category)} - BharatBulletin`
         updateNews()
         // eslint-disable-next-line
     }, [])
 
-
     const fetchMoreData = async () => {
-        // setState({ page: page + 1 });
-        const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page + 1}&pagesize=${props.pagesize}`
-        let data = await fetch(url)
-        let parsedData = await data.json()
-        setArticles(articles.concat(parsedData.articles))
-        setTotalResults(parsedData.totalResults)
-        setPage(page + 1)
+        const url = `https://api.newscatcherapi.com/v2/latest_headlines?topic=${props.category}&when=7d&page_size=${props.pagesize}&lang=en&countries=${props.countries}`;
+        const requestOptions = {
+            method: 'GET',
+            headers: {
+                'x-api-key': props.apiKey
+            }
+        };
+    
+        try {
+            console.log(url, requestOptions);
+            const response = await fetch(url, requestOptions);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            setArticles(articles.concat(data.articles));
+            setTotalResults(data.total);
+            setPage(page + 1);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            // Implement exponential backoff
+            await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, page)));
+            // Retry fetch after delay
+            fetchMoreData();
+        }
     }
+    
+
 
     return (
         <div className='container my-3'>
-            <h1 className='text-center ' style={{ marginTop: '80px' }}><strong>NewsMonkey - Top {capitalized(props.category)} Headlines</strong></h1>
+            <h1 className='text-center ' style={{ marginTop: '80px' }}><strong>BharatBulletin - Top {capitalized(props.category)} Headlines</strong></h1>
             {loading && <Spinner />}
             <InfiniteScroll
                 dataLength={articles.length}
@@ -62,11 +94,18 @@ const News = (props) => {
                 loader={<Spinner />} style={{ overflow: 'hidden' }}>
                 <div className="container">
                     <div className="row my-3">
-                        {articles.map((element) => {
-                            return <div className="col-md-4 " key={element.url} >
-                                <NewsItem title={element.title ? element.title : ''} desc={element.description ? element.description : ''} imageUrl={element.urlToImage ? element.urlToImage : 'https://media.istockphoto.com/id/547356494/video/loading-symbol-loop.jpg?s=640x640&k=20&c=TU113GZc5CUv3yC0wAgY94Um6hbedSbs0i58jTi7Nx8='} newsUrl={element.url} author={element.author ? element.author : 'Unknown'} date={element.publishedAt} source={element.source.name} />
+                        {articles.map((Article) => {
+                            return <div className="col-md-4 " key={Article.link} >
+                                <NewsItem 
+                                title={Article.title ? Article.title : ''} 
+                                desc={Article.excerpt ? Article.excerpt : ''} 
+                                imageUrl={Article.media ? Article.media : 'https://media.istockphoto.com/id/547356494/video/loading-symbol-loop.jpg?s=640x640&k=20&c=TU113GZc5CUv3yC0wAgY94Um6hbedSbs0i58jTi7Nx8='} 
+                                newsUrl={Article.link} 
+                                author={Article.author ? Article.author : 'Unknown'} 
+                                date={Article.published_date} 
+                                source={Article.clean_url} />
                             </div>
-                        })}
+                        })} 
                     </div>
                 </div>
             </InfiniteScroll>
@@ -76,9 +115,9 @@ const News = (props) => {
 
 // default props in classbasd components
 News.defaultProps = {
-    country: 'in',
-    category: 'general',
-    pagesize: 12
+    countries: 'in',
+    category: 'news',
+    pagesize: 18
 }
 
 // Propstype in classbasd components
