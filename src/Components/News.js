@@ -1,131 +1,127 @@
-import React, { useEffect, useState } from 'react'
-import NewsItem from './NewsItem'
+import React, { useEffect, useState } from 'react';
+import NewsItem from './NewsItem';
 import Spinner from './Spinner';
-import PropTypes from 'prop-types'
-import InfiniteScroll from "react-infinite-scroll-component";
+import PropTypes from 'prop-types';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
+const News = ({ apiKey, setProgress, pageSize, category, language }) => {
+  const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [totalResults, setTotalResults] = useState(0);
 
+  const capitalized = (str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  };
 
-const News = (props) => {
+  const updateNews = async () => {
+    // Fetch news data with the updated language
+    const url = `https://api.newscatcherapi.com/v2/latest_headlines?topic=${category}&when=7d&page_size=${pageSize}&lang=${language}&countries=in`;
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        'x-api-key': apiKey,
+      },
+    };
 
-    const [articles, setArticles] = useState([])
-    const [loading, setLoading] = useState(true)
-    const [page, setPage] = useState(1)
-    const [totalResults, setTotalResults] = useState(0)
-
-
-    const capitalized = (str) => {
-        return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
+    try {
+      setLoading(true);
+      const response = await fetch(url, requestOptions);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      setArticles(data.articles);
+      setLoading(false);
+      setTotalResults(data.total);
+    } catch (error) {
+      console.error('Error fetching data:', error);
     }
+  };
 
-    const updateNews = async () => {
-        props.setProgress(0);
-        const url = `https://api.newscatcherapi.com/v2/latest_headlines?topic=${props.category}&when=7d&page_size=${props.pagesize}&lang=en&countries=${props.countries}`;
-        const requestOptions = {
-            method: 'GET',
-            headers: {
-                'x-api-key': props.apiKey
-            }
-        };
-
-        try {
-            props.setProgress(10);
-            setLoading(true);
-            const response = await fetch(url, requestOptions);
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            const data = await response.json();
-            props.setProgress(50);
-            setArticles(data.articles);
-            setLoading(false);
-            setTotalResults(data.total);
-            props.setProgress(100);
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
-    }
-
-
-    useEffect(() => {
-        const titleOfDoc = `${capitalized(props.category)} - BharatBulletin`
+  useEffect(() => {
+    const titleOfDoc = `${capitalized(category)} - BharatBulletin`
         document.title = titleOfDoc
-        updateNews()
-        // eslint-disable-next-line
-    }, [])
+    updateNews();
+    // eslint-disable-next-line
+  }, [category, language]);
 
-    const fetchMoreData = async () => {
-        const url = `https://api.newscatcherapi.com/v2/latest_headlines?topic=${props.category}&when=7d&page_size=${props.pagesize}&lang=en&countries=${props.countries}`;
-        const requestOptions = {
-            method: 'GET',
-            headers: {
-                'x-api-key': props.apiKey
-            }
-        };
-    
-        try {
-            console.log(url, requestOptions);
-            const response = await fetch(url, requestOptions);
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            const data = await response.json();
-            setArticles(articles.concat(data.articles));
-            setTotalResults(data.total);
-            setPage(page + 1);
-        } catch (error) {
-            console.error('Error fetching data:', error);
-            // Implement exponential backoff
-            await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, page)));
-            // Retry fetch after delay
-            fetchMoreData();
-        }
+  const fetchMoreData = async () => {
+    // Fetch more news data with the updated language
+    const url = `https://api.newscatcherapi.com/v2/latest_headlines?topic=${category}&when=7d&page_size=${pageSize}&lang=${language}&countries=in`;
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        'x-api-key': apiKey,
+      },
+    };
+
+    try {
+      const response = await fetch(url, requestOptions);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      setArticles([...articles, ...data.articles]);
+      setTotalResults(data.total);
+      setPage(page + 1);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      // Implement exponential backoff
+      await new Promise((resolve) => setTimeout(resolve, 1000 * Math.pow(2, page)));
+      // Retry fetch after delay
+      fetchMoreData();
     }
-    
+  };
 
-
-    return (
-        <div className='container my-3'>
-            <h1 className='text-center ' style={{ marginTop: '80px' }}><strong>BharatBulletin - Top {capitalized(props.category)} Headlines</strong></h1>
-            {loading && <Spinner />}
-            <InfiniteScroll
-                dataLength={articles.length}
-                next={fetchMoreData}
-                hasMore={articles.length !== totalResults}
-                loader={<Spinner />} style={{ overflow: 'hidden' }}>
-                <div className="container">
-                    <div className="row my-3">
-                        {articles.map((Article) => {
-                            return <div className="col-md-4 " key={Article.link} >
-                                <NewsItem 
-                                title={Article.title ? Article.title : ''} 
-                                desc={Article.excerpt ? Article.excerpt : ''} 
-                                imageUrl={Article.media ? Article.media : 'https://media.istockphoto.com/id/547356494/video/loading-symbol-loop.jpg?s=640x640&k=20&c=TU113GZc5CUv3yC0wAgY94Um6hbedSbs0i58jTi7Nx8='} 
-                                newsUrl={Article.link} 
-                                author={Article.author ? Article.author : 'Unknown'} 
-                                date={Article.published_date} 
-                                source={Article.clean_url} />
-                            </div>
-                        })} 
-                    </div>
+  return (
+    <div className='container my-3'>
+      <h1 className='text-center ' style={{ marginTop: '80px' }}>
+        <strong>BharatBulletin - Top {capitalized(category)} Headlines</strong>
+      </h1>
+      {loading && <Spinner />}
+      <InfiniteScroll
+        dataLength={articles.length}
+        next={fetchMoreData}
+        hasMore={articles.length !== totalResults}
+        loader={<Spinner />}
+        style={{ overflow: 'hidden' }}>
+        <div className='container'>
+          <div className='row my-3'>
+            {articles.map((Article) => {
+              return (
+                <div className='col-md-4 ' key={Article.link}>
+                  <NewsItem
+                    title={Article.title ? Article.title : ''}
+                    desc={Article.excerpt ? Article.excerpt : ''}
+                    imageUrl={Article.media ? Article.media : 'https://media.istockphoto.com/id/547356494/video/loading-symbol-loop.jpg?s=640x640&k=20&c=TU113GZc5CUv3yC0wAgY94Um6hbedSbs0i58jTi7Nx8='}
+                    newsUrl={Article.link}
+                    author={Article.author ? Article.author : 'Unknown'}
+                    date={Article.published_date}
+                    source={Article.clean_url}
+                  />
                 </div>
-            </InfiniteScroll>
+              );
+            })}
+          </div>
         </div>
-    )
-}
+      </InfiniteScroll>
+    </div>
+  );
+};
 
-// default props in classbasd components
+// Default props
 News.defaultProps = {
-    countries: 'in',
-    category: 'news',
-    pagesize: 18
-}
+  pageSize: 18,
+};
 
-// Propstype in classbasd components
+// Prop types
 News.propTypes = {
-    country: PropTypes.string,
-    category: PropTypes.string,
-    pagesize: PropTypes.number,
-}
+  apiKey: PropTypes.string.isRequired,
+  setProgress: PropTypes.func.isRequired,
+  pageSize: PropTypes.number,
+  category: PropTypes.string.isRequired,
+  language: PropTypes.string.isRequired,
+};
 
-export default News
+export default News;

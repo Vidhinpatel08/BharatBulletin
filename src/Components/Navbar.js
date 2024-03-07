@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 
-const Navbar = () => {
+const Navbar = (props) => {
     return (
         <div>
             <nav className="navbar fixed-top navbar-expand-lg  bg-dark navbar-dark">
@@ -22,7 +22,14 @@ const Navbar = () => {
                             <li className="nav-item"><Link className="nav-link" to="/science">Science</Link></li>
                             <li className="nav-item"><Link className="nav-link" to="/tech">Technology</Link></li>
                         </ul>
-
+                        <div className="box-lang">
+                            {/* Selecting technologies */}
+                            <select className="select-lang" placeholder="Technologies" aria-label="Technologies" value={props.language} onChange={props.changeLanguage} name="technologies" >
+                                <option value='en'>English</option>
+                                <option value='hi'>Hindi</option>
+                                <option value='gu'>Gujarati</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </nav>
