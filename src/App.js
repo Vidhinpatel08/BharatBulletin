@@ -7,7 +7,7 @@ import Error from './Components/Error';
 import LoadingBar from 'react-top-loading-bar';
 
 const App = () => {
-  const pageSize = 50;
+  const pageSize = 100;
   const apiKey = process.env.REACT_APP_NEWS_API;   // create .env.local file  & write [REACT_APP_NEWS_API = 'NewsApiKey']
   const defaultLanguage = localStorage.getItem('language') || 'en';
 
