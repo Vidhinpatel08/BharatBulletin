@@ -94,6 +94,7 @@ const News = ({ apiKey, setProgress, pageSize, category, language }) => {
                   <NewsItem
                     title={Article.title ? Article.title : ''}
                     desc={Article.excerpt ? Article.excerpt : ''}
+                    summary={Article.summary ? Article.summary : ''}
                     imageUrl={Article.media ? Article.media : 'https://media.istockphoto.com/id/547356494/video/loading-symbol-loop.jpg?s=640x640&k=20&c=TU113GZc5CUv3yC0wAgY94Um6hbedSbs0i58jTi7Nx8='}
                     newsUrl={Article.link}
                     author={Article.author ? Article.author : 'Unknown'}
