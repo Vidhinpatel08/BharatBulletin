@@ -48,7 +48,8 @@ const News = (props) => {
 
 
     useEffect(() => {
-        document.title = `${capitalized(props.category)} - BharatBulletin`
+        const titleOfDoc = `${capitalized(props.category)} - BharatBulletin`
+        document.title = titleOfDoc
         updateNews()
         // eslint-disable-next-line
     }, [])
