@@ -5,6 +5,7 @@ import News from './Components/News';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Error from './Components/Error';
 import LoadingBar from 'react-top-loading-bar';
+import ScrollTop from './Components/ScrollTop';
 
 const App = () => {
   const pageSize = 100;
@@ -18,6 +19,14 @@ const App = () => {
     const selectedLanguage = e.target.value;
     setLanguage(selectedLanguage);
     localStorage.setItem('language', selectedLanguage);
+    handleScrollToTop()
+  };
+
+  const handleScrollToTop = () => {
+    window.scrollTo({
+      top: -15,
+      behavior: 'smooth',
+    });
   };
 
   useEffect(() => {
@@ -27,7 +36,8 @@ const App = () => {
   return (
     <div>
       <Router>
-        <Navbar language={language} changeLanguage={changeLanguage} />
+        <Navbar language={language} changeLanguage={changeLanguage} handleScrollToTop={handleScrollToTop}/>
+        <ScrollTop handleScrollToTop={handleScrollToTop}></ScrollTop>
         <LoadingBar color='#f11946' progress={progress} />
         <Routes>
           <Route path='/' element={<NewsPage apiKey={apiKey} setProgress={setProgress} pageSize={pageSize} language={language} />} />

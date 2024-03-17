@@ -3,14 +3,14 @@ import React, { useState } from 'react'
 const NewsItem = (props) => {
     let { title, desc, imageUrl, newsUrl, summary, date, author, source } = props
     let [fullArticle, setFullArticle] = useState(false);
-
+    var defaultimage = ("https://media.istockphoto.com/id/547356494/video/loading-symbol-loop.jpg?s=640x640&k=20&c=TU113GZc5CUv3yC0wAgY94Um6hbedSbs0i58jTi7Nx8=");
     const readMoreData = (e) => {
         setFullArticle(true)
     }
 
     return (
         <div className='my-3'>
-            <div className="card mx-2" >
+            <div className="card mx-2 border border-dark " >
                 <div style={{
                     display: 'flex',
                     justifyContent: 'flex-end',
@@ -21,7 +21,7 @@ const NewsItem = (props) => {
                 }}>
                     <span className="badge rounded-pill bg-danger" style={{ zIndex: '1', left: '90%' }}>{source}</span>
                 </div>
-                <img src={imageUrl} className="card-img-top" alt="NewsImageUrl" />
+                <img src={imageUrl !== 'default' ? imageUrl : defaultimage} className="card-img-top" alt="NewsImageUrl" width={400} height={220}/>
                 <div className="card-body">
                     <h5 className="card-title fw-semibold">{title}</h5>
                     {/* <hr/> */}

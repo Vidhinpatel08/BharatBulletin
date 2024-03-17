@@ -16,6 +16,64 @@ hr {
     font-weight: 600;
 }
 
+.card-img-top {
+    object-fit: contain;
+    background-image: url("https://media.istockphoto.com/id/547356494/video/loading-symbol-loop.jpg?s=640x640&k=20&c=TU113GZc5CUv3yC0wAgY94Um6hbedSbs0i58jTi7Nx8=");
+    background-size: cover;
+}
+
+.Scroll-btn-div {
+    height: 52px;
+}
+
+.Scroll-btn {
+    box-sizing: border-box;
+    height: 45px;
+    width: 45px;
+    background-color: rgb(0 0 0);
+    border: 2px solid rgb(110, 109, 109);
+    border-radius: 50%;
+    position: fixed;
+    bottom: 45px;
+    right: 45px;
+    cursor: pointer;
+    z-index: 5;
+}
+
+.Scroll-btn img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 70%;
+    height: 70%;
+    margin: auto;
+    margin-top: 5px;
+    padding: auto;
+    object-fit: contain;
+    filter: invert(1);
+}
+
+.Scroll-btn img:active{
+    margin-top: 7px;
+    width: 60%;
+    height: 60%;
+}
+
+@media screen and (max-width: 455px) {
+    .News-div {
+        padding: 3px;
+    }
+
+    .title-div {
+        font-size: 20px;
+    }
+
+    .Scroll-btn {
+        bottom: 20px;
+        right: 20px;
+    }
+}
+
 @media screen and (max-width: 992px) {
     .box-lang {
         border: 0px solid rgb(0, 0, 0);

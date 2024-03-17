@@ -41,7 +41,7 @@ const News = ({ apiKey, setProgress, pageSize, category, language }) => {
 
   useEffect(() => {
     const titleOfDoc = `${capitalized(category)} - BharatBulletin`
-        document.title = titleOfDoc
+    document.title = titleOfDoc
     updateNews();
     // eslint-disable-next-line
   }, [category, language]);
@@ -76,7 +76,7 @@ const News = ({ apiKey, setProgress, pageSize, category, language }) => {
 
   return (
     <div className='container my-3'>
-      <h1 className='text-center ' style={{ marginTop: '80px' }}>
+      <h1 className='text-center title-div' id='title-news'>
         <strong>BharatBulletin - Top {capitalized(category)} Headlines</strong>
       </h1>
       {loading && <Spinner />}
@@ -90,12 +90,12 @@ const News = ({ apiKey, setProgress, pageSize, category, language }) => {
           <div className='row my-3'>
             {articles.map((Article) => {
               return (
-                <div className='col-md-4 ' key={Article.link}>
+                <div className='col-md-4 News-div' key={Article.link}>
                   <NewsItem
                     title={Article.title ? Article.title : ''}
                     desc={Article.excerpt ? Article.excerpt : ''}
                     summary={Article.summary ? Article.summary : ''}
-                    imageUrl={Article.media ? Article.media : 'https://media.istockphoto.com/id/547356494/video/loading-symbol-loop.jpg?s=640x640&k=20&c=TU113GZc5CUv3yC0wAgY94Um6hbedSbs0i58jTi7Nx8='}
+                    imageUrl={Article.media ? Article.media : 'default'}
                     newsUrl={Article.link}
                     author={Article.author ? Article.author : 'Unknown'}
                     date={Article.published_date}

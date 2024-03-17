@@ -38,7 +38,7 @@ This React.js project fetches project details from the GitHub repository "[https
      ```
      REACT_APP_NEWS_API_KEY=YOUR_NEWSCATCHER_API_KEY
      ```
-
+   - For register here : [https://app.newscatcherapi.com/auth/register_nc](https://app.newscatcherapi.com/auth/register_nc)
  ## **Usage**
 
 1. **Start the development server:**
