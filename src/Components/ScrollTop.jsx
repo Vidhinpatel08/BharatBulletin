@@ -9,7 +9,7 @@ const ScrollTop = ({ handleScrollToTop }) => {
         <div className='Scroll-btn-div'>
             <Link onClick={handleScrollToTop}>
                 <div className="Scroll-btn">
-                    <img src={Arrow} alt="^" srcset={Arrow} />
+                    <img src={Arrow} alt="^" srcSet={Arrow} />
                 </div>
             </Link>
         </div>

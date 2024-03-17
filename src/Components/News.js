@@ -75,38 +75,40 @@ const News = ({ apiKey, setProgress, pageSize, category, language }) => {
   };
 
   return (
-    <div className='container my-3'>
-      <h1 className='text-center title-div' id='title-news'>
-        <strong>BharatBulletin - Top {capitalized(category)} Headlines</strong>
-      </h1>
-      {loading && <Spinner />}
-      <InfiniteScroll
-        dataLength={articles.length}
-        next={fetchMoreData}
-        hasMore={articles.length !== totalResults}
-        loader={<Spinner />}
-        style={{ overflow: 'hidden' }}>
-        <div className='container'>
-          <div className='row my-3'>
-            {articles.map((Article) => {
-              return (
-                <div className='col-md-4 News-div' key={Article.link}>
-                  <NewsItem
-                    title={Article.title ? Article.title : ''}
-                    desc={Article.excerpt ? Article.excerpt : ''}
-                    summary={Article.summary ? Article.summary : ''}
-                    imageUrl={Article.media ? Article.media : 'default'}
-                    newsUrl={Article.link}
-                    author={Article.author ? Article.author : 'Unknown'}
-                    date={Article.published_date}
-                    source={Article.clean_url}
-                  />
-                </div>
-              );
-            })}
+    <div className='main-container-box'>
+      <div className='container pt-3'>
+        <h1 className='text-center title-div' id='title-news'>
+          <strong>BharatBulletin - Top {capitalized(category)} Headlines</strong>
+        </h1>
+        {loading && <Spinner />}
+        <InfiniteScroll
+          dataLength={articles.length}
+          next={fetchMoreData}
+          hasMore={articles.length !== totalResults}
+          loader={<Spinner />}
+          style={{ overflow: 'hidden' }}>
+          <div className='container'>
+            <div className='row my-3'>
+              {articles.map((Article) => {
+                return (
+                  <div className='col-md-4 News-div' key={Article.link}>
+                    <NewsItem
+                      title={Article.title ? Article.title : ''}
+                      desc={Article.excerpt ? Article.excerpt : ''}
+                      summary={Article.summary ? Article.summary : ''}
+                      imageUrl={Article.media ? Article.media : 'default'}
+                      newsUrl={Article.link}
+                      author={Article.author ? Article.author : 'Unknown'}
+                      date={Article.published_date}
+                      source={Article.clean_url}
+                    />
+                  </div>
+                );
+              })}
+            </div>
           </div>
-        </div>
-      </InfiniteScroll>
+        </InfiniteScroll>
+      </div>
     </div>
   );
 };

@@ -1,3 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300..900&family=Mukta+Mahee:wght@200;300;400;500;600;700;800&family=Mukta+Vaani:wght@200;300;400;500;600;700;800&family=Mukta:wght@200;300;400;500;600;700;800&display=swap');
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: rgba(255, 255, 255, 0.589);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba(235, 69, 69, 0.921);
+    border-radius: 10px;
+}
+
+.main-container-box {
+    background-color: rgb(225 225 225 / 23%);
+}
+
+
+.mukta-light {
+    font-family: "Mukta", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+    font-size: 1em;
+}
+
+.mukta-vaani-regular {
+    font-family: "Mukta Vaani", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 1.2em;
+}
+
+
+.mukta-vaani-bold {
+    font-family: "Mukta Vaani", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 1.5em;
+}
+
+
+
+
 hr {
     display: none;
 }
@@ -17,9 +63,12 @@ hr {
 }
 
 .card-img-top {
+    box-sizing: border-box;
     object-fit: contain;
     background-image: url("https://media.istockphoto.com/id/547356494/video/loading-symbol-loop.jpg?s=640x640&k=20&c=TU113GZc5CUv3yC0wAgY94Um6hbedSbs0i58jTi7Nx8=");
-    background-size: cover;
+    background-size: contain;
+    background-repeat: round;
+    margin: 1px;
 }
 
 .Scroll-btn-div {
@@ -53,10 +102,15 @@ hr {
     filter: invert(1);
 }
 
-.Scroll-btn img:active{
+.Scroll-btn img:active {
     margin-top: 7px;
     width: 60%;
     height: 60%;
+}
+
+.Card-Box {
+    box-sizing: border-box;
+    box-shadow: 4px 5px 9px 2px #8c8c8c3b;
 }
 
 @media screen and (max-width: 455px) {
