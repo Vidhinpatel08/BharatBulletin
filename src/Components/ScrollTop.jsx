@@ -6,7 +6,7 @@ const ScrollTop = ({ handleScrollToTop }) => {
 
 
     return (
-        <div className='Scroll-btn-div'>
+        <div className='Scroll-btn-div select-none'>
             <Link onClick={handleScrollToTop}>
                 <div className="Scroll-btn">
                     <img src={Arrow} alt="^" srcSet={Arrow} />

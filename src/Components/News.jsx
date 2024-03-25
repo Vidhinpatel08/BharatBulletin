@@ -77,7 +77,7 @@ const News = ({ apiKey, setProgress, pageSize, category, language }) => {
   return (
     <div className='main-container-box'>
       <div className='container pt-3'>
-        <h1 className='text-center title-div' id='title-news'>
+        <h1 className='text-center title-div select-none' id='title-news'>
           <strong>BharatBulletin - Top {capitalized(category)} Headlines</strong>
         </h1>
         {loading && <Spinner />}
