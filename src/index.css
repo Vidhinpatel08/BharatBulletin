@@ -126,8 +126,17 @@ hr {
     box-shadow: 4px 5px 9px 2px #8c8c8c3b;
 }
 
-.select-none{
+.select-none {
     user-select: none;
+}
+
+.newscard-tagbar {
+    display: flex;
+    justify-content: flex-end;
+    right: -10px;
+    top: -10px;
+    position: absolute;
+    font-size: 20px;
 }
 
 
@@ -180,11 +189,12 @@ hr {
         right: 20px;
     }
 
-    .card-body{
+    .card-body {
         margin: -1px;
         padding: -1px;
         font-size: 0.9em;
     }
+
 }
 
 @media screen and (max-width: 992px) {
